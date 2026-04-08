@@ -2,9 +2,9 @@
 
 **Identity Domain Model Validation for Microsoft Entra Conditional Access**
 
-By Albert Jee | IAM Consultant & Former Microsoft FastTrack Architect
+By Albert Jee | IAM Consultant \& Former Microsoft FastTrack Architect
 
----
+\---
 
 ## Executive Summary
 
@@ -16,9 +16,9 @@ They do not enforce identity boundaries.
 
 This audit engine evaluates your tenant against a single question:
 
-> **Does your Conditional Access architecture function as an Identity Control Plane — or a policy collection?**
+> \\\*\\\*Does your Conditional Access architecture function as an Identity Control Plane — or a policy collection?\\\*\\\*
 
----
+\---
 
 ## Why This Matters Now
 
@@ -28,15 +28,15 @@ This is an **architectural validation engine**.
 
 Unlike standard configuration exporters or best-practice checklists, this Graph-backed framework evaluates your architecture for domain alignment, assignment debt, and strategic security gaps. It doesn't just list your policies; it scores your maturity as an Identity Control Plane.
 
----
+\---
 
 ## What This Is Not
 
-- Not a policy deployment tool
-- Not a best-practice checklist
-- Not a configuration exporter
+* Not a policy deployment tool
+* Not a best-practice checklist
+* Not a configuration exporter
 
----
+\---
 
 ## 📦 Components
 
@@ -46,21 +46,23 @@ Unlike standard configuration exporters or best-practice checklists, this Graph-
 
 **Purpose:** Evaluates a **single Conditional Access policy** and determines whether it is:
 
-- ✅ Domain-aligned
-- ⚠ Needs review
-- ❌ Application-centric
+* ✅ Domain-aligned
+* ⚠ Needs review
+* ❌ Application-centric
 
 **Outputs:**
-- Console summary
-- HTML report
-- JSON export
+
+* Console summary
+* HTML report
+* JSON export
 
 **Typical use cases:**
-- Reviewing new policies before production
-- Architecture validation during audits
-- Peer review of privileged access controls
 
----
+* Reviewing new policies before production
+* Architecture validation during audits
+* Peer review of privileged access controls
+
+\---
 
 ### 2️⃣ CA Tenant Domain Scorecard
 
@@ -69,18 +71,20 @@ Unlike standard configuration exporters or best-practice checklists, this Graph-
 **Purpose:** Performs a **tenant-wide analysis** of all Conditional Access policies and produces an executive scorecard.
 
 **Outputs:**
-- Console scorecard
-- HTML executive report
-- JSON export
-- CSV policy summary
+
+* Console scorecard
+* HTML executive report
+* JSON export
+* CSV policy summary
 
 **Identifies:**
-- Privileged boundary gaps
-- Workload identity coverage gaps
-- Break-glass tripwire visibility
-- Individual user assignment risks
 
----
+* Privileged boundary gaps
+* Workload identity coverage gaps
+* Break-glass tripwire visibility
+* Individual user assignment risks
+
+\---
 
 ## Architecture Model
 
@@ -107,28 +111,29 @@ Stop viewing Conditional Access as a series of gates in front of applications. I
 
 In the legacy model, your evaluation signals are white noise—a mess of individual GUIDs and "temporary" exclusions. The Domain-Aligned model replaces this noise with governance. This audit validates that your engine only accepts signals from governed Domain Groups. If an identity doesn't fit a domain, it has no path forward. The audit queries each policy's IncludeUsers and ExcludeUsers properties, flags any GUID that doesn't resolve to a known Domain group, and surfaces these hard-coded backdoors that your current reporting misses.
 
----
+\---
 
 ## 🧠 Domain Model
 
 Policies are evaluated against these identity domains:
 
-| Domain         | Description                               |
-| -------------- | ----------------------------------------- |
-| **Privileged** | Tier-0 / admin identities                 |
-| **Workforce**  | Employees and standard users              |
-| **Guest**      | B2B / external users                      |
-| **Workload**   | Service principals and managed identities |
+|Domain|Description|
+|-|-|
+|**Privileged**|Tier-0 / admin identities|
+|**Workforce**|Employees and standard users|
+|**Guest**|B2B / external users|
+|**Workload**|Service principals and managed identities|
 
 Classification is based on:
-- User & group targeting
-- Application scope
-- Authentication strength
-- Device trust requirements
-- Session controls
-- Exclusion hygiene
 
----
+* User \& group targeting
+* Application scope
+* Authentication strength
+* Device trust requirements
+* Session controls
+* Exclusion hygiene
+
+\---
 
 ## The Two Models: Application-Centric vs Domain-Aligned
 
@@ -165,13 +170,13 @@ In this model, you don't manage app-specific gates; you manage the trust bar for
 
 When a new SaaS application launches, you do not write a new policy. Users in the Workforce domain are already covered by Workforce policies. Users in the Privileged domain are already covered by Privileged policies. The application is automatically protected without a single policy change.
 
----
+\---
 
-## ⚠️ Known Limitations & Disclaimers
+## ⚠️ Known Limitations \& Disclaimers
 
 These scripts are tutorial companions to the Medium article series, not enterprise audit tools. Understand these limitations before interpreting findings.
 
-**Break-Glass Accounts & Conditional Access**
+**Break-Glass Accounts \& Conditional Access**
 
 These scripts detect Conditional Access exclusions that may represent intentional break-glass carve-outs (accounts explicitly excluded from CA policies). This script does NOT audit whether you actually have a break-glass account or whether it is properly documented. It only shows CA policy exclusions. Many organizations operate without formal break-glass accounts—that is a separate governance decision, not a CA architecture issue. If you use break-glass: verify it is explicitly excluded from all CA policies. If you do not use break-glass: acknowledge that in your risk assessment.
 
@@ -191,47 +196,48 @@ Auth strength detection relies on Microsoft Graph response format. If Graph omit
 
 These scripts export findings in console output, HTML, JSON, and CSV formats suitable for review and documentation. They are not designed for automated remediation. Security decisions should always involve human review and testing.
 
----
+\---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- PowerShell 7.2+
-- Microsoft Graph PowerShell SDK
-- Required Graph permissions:
-  - `Policy.Read.All`
-  - `Group.Read.All`
-  - `Directory.Read.All`
-  - `User.Read.All` (tenant scorecard only)
+* PowerShell 7.2+
+* Microsoft Graph PowerShell SDK
+* Required Graph permissions:
+
+  * `Policy.Read.All`
+  * `Group.Read.All`
+  * `Directory.Read.All`
+  * `User.Read.All` (tenant scorecard only)
 
 ### Installation
 
 Clone this repository:
 
 ```powershell
-git clone https://github.com/albertjee/ca-domain-alignment-audit.git
-cd ca-domain-alignment-audit
+git clone https://github.com/albertjee/entra-identity-audit.git
+cd entra-identity-audit
 ```
 
 ### 🔍 Analyze a Single Policy
 
 ```powershell
-.\CA-policy-domain-check.ps1 `
+.\\\\CA-policy-domain-check.ps1 `
   -PolicyName "CA - Privileged - All Apps"
 ```
 
 or by PolicyId:
 
 ```powershell
-.\CA-policy-domain-check.ps1 `
+.\\\\CA-policy-domain-check.ps1 `
   -PolicyId "11111111-2222-3333-4444-555555555555"
 ```
 
 ### 📊 Analyze the Entire Tenant
 
 ```powershell
-.\CA-tenant-domain-scorecard.ps1
+.\\\\CA-tenant-domain-scorecard.ps1
 ```
 
 Optional switches:
@@ -239,10 +245,10 @@ Optional switches:
 ```powershell
 -IncludeReportOnly
 -TenantId contoso.onmicrosoft.com
--ExportPath .\Outputs
+-ExportPath .\\\\Outputs
 ```
 
----
+\---
 
 ## ✅ Interpreting Results
 
@@ -252,11 +258,9 @@ Optional switches:
 
 Your domain-aligned score (0-100) reflects your organizational risk posture:
 
-- **Score below 50 (The Roster Trap):** Your security relies on administrator memory. You are managing a "ghost roster" of individual users and one-off app gates. When an admin leaves, their logic stays, and your debt grows.
-
-- **Score 50–79 (The Hybrid Muddle):** You have the "Identity Control Plane" in name only. You use global policies, but your "Exclusion Hygiene" is so poor that your perimeter is more Swiss cheese than shield.
-
-- **Score 80+ (The Identity Control Plane):** You have achieved structural security. You no longer "deploy" security for new apps; they inherit it. You have moved from playing Whac-A-Mole to managing a fortress.
+* **Score below 50 (The Roster Trap):** Your security relies on administrator memory. You are managing a "ghost roster" of individual users and one-off app gates. When an admin leaves, their logic stays, and your debt grows.
+* **Score 50–79 (The Hybrid Muddle):** You have the "Identity Control Plane" in name only. You use global policies, but your "Exclusion Hygiene" is so poor that your perimeter is more Swiss cheese than shield.
+* **Score 80+ (The Identity Control Plane):** You have achieved structural security. You no longer "deploy" security for new apps; they inherit it. You have moved from playing Whac-A-Mole to managing a fortress.
 
 ### Policy Classifications Explained
 
@@ -276,15 +280,16 @@ Your domain-aligned score (0-100) reflects your organizational risk posture:
 
 Policies are scored on impact to domain alignment:
 
-- **+2**: DOMAIN-ALIGNED or GLOBAL-BASELINE — Moves you toward the model
-- **+1**: PARTIALLY-ALIGNED — Partial progress
-- **0**: APPLICATION-CENTRIC or REPORT-ONLY — No progress
-- **-1**: PRIVILEGED-UNGOVERNED — Active gap in critical area
+* **+2**: DOMAIN-ALIGNED or GLOBAL-BASELINE — Moves you toward the model
+* **+1**: PARTIALLY-ALIGNED — Partial progress
+* **0**: APPLICATION-CENTRIC or REPORT-ONLY — No progress
+* **-1**: PRIVILEGED-UNGOVERNED — Active gap in critical area
 
 Your scorecard produces an overall Alignment Score (0-100) with verdict:
-- **80%+**: DOMAIN-ALIGNED
-- **50-79%**: IN TRANSITION
-- **Below 50%**: APPLICATION-CENTRIC
+
+* **80%+**: DOMAIN-ALIGNED
+* **50-79%**: IN TRANSITION
+* **Below 50%**: APPLICATION-CENTRIC
 
 ### Strategic Gap Findings: The Cost of Inaction
 
@@ -296,7 +301,7 @@ Your scorecard produces an overall Alignment Score (0-100) with verdict:
 
 A critical clarification: In a domain-aligned model, break-glass accounts must be **excluded** from Global Baseline or Domain policies to maintain the "Identity Control Plane" during a tenant-wide outage. If a misconfigured global policy locks out break-glass accounts, your safety valve is compromised. The audit flags this gap to ensure that break-glass groups have explicit exclusion rules—or are assigned to a dedicated "Emergency Access" domain with minimal controls.
 
----
+\---
 
 ## Common Findings and What They Mean
 
@@ -310,17 +315,17 @@ A critical clarification: In a domain-aligned model, break-glass accounts must b
 
 **No service principal Conditional Access policies found** — Implement workload CA policies targeting Service-Principal-Identities group via conditions.clientApplications. Enforce credential and scope restrictions.
 
----
+\---
 
-## 🔐 Security & Design Principles
+## 🔐 Security \& Design Principles
 
-- ✅ No write operations against Microsoft Graph
-- ✅ Safe to run in production tenants
-- ✅ No tenant data sent externally
-- ✅ All reports generated locally
-- ✅ Defensive handling of Graph throttling and schema drift
+* ✅ No write operations against Microsoft Graph
+* ✅ Safe to run in production tenants
+* ✅ No tenant data sent externally
+* ✅ All reports generated locally
+* ✅ Defensive handling of Graph throttling and schema drift
 
----
+\---
 
 ## 📁 Repository Structure
 
@@ -329,32 +334,32 @@ A critical clarification: In a domain-aligned model, break-glass accounts must b
 ├── CA-policy-domain-check.ps1
 ├── CA-tenant-domain-scorecard.ps1
 ├── SETUP.md
-├── RBAC_ROLES_GUIDANCE.md
+├── RBAC\\\_ROLES\\\_GUIDANCE.md
 └── README.md
 └── README.md
 ```
 
----
+\---
 
 ## ⚠️ Limitations
 
-- This tool evaluates **policy design quality**, not runtime enforcement success
-- Domain inference relies on naming conventions and targeting patterns
-- Authentication strength evaluation depends on Graph schema availability
+* This tool evaluates **policy design quality**, not runtime enforcement success
+* Domain inference relies on naming conventions and targeting patterns
+* Authentication strength evaluation depends on Graph schema availability
 
----
+\---
 
 ## 🛣️ Roadmap
 
 Planned improvements include:
 
-- Shared PowerShell module packaging
-- PSScriptAnalyzer enforcement
-- SARIF output for security tooling
-- Azure DevOps pipeline support
-- Optional What-If and dry-run modes
+* Shared PowerShell module packaging
+* PSScriptAnalyzer enforcement
+* SARIF output for security tooling
+* Azure DevOps pipeline support
+* Optional What-If and dry-run modes
 
----
+\---
 
 ## Next Steps
 
@@ -367,7 +372,7 @@ Planned improvements include:
 7. **Implement break-glass tripwire** policy (monitoring only, no block).
 8. **Re-run the scorecard monthly**. Track progress toward domain alignment.
 
----
+\---
 
 ## About
 
@@ -379,6 +384,7 @@ This repository is built for architects and CISOs evaluating whether their Condi
 
 **github.com/albertjee**
 
----
+\---
 
 *This repository contains audit and evaluation scripts only. Nothing in these scripts modifies tenant state. Use in read-only audit mode. Test in non-production environments first.*
+
